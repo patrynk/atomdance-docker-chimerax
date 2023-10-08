@@ -1,0 +1,3 @@
+[submodule "lib/cpptraj"]
+	path = lib/cpptraj
+	url = https://github.com/Amber-MD/cpptraj.git
