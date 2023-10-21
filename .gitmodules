@@ -1,3 +1,6 @@
 [submodule "lib/cpptraj"]
 	path = lib/cpptraj
 	url = https://github.com/Amber-MD/cpptraj.git
+[submodule "lib/ATOMDANCE-comparative-protein-dynamics"]
+	path = lib/ATOMDANCE-comparative-protein-dynamics
+	url = https://github.com/gbabbitt/ATOMDANCE-comparative-protein-dynamics.git
