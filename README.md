@@ -1,9 +1,9 @@
 atomdance-docker
 ================
-ver. 0.1-unreleased
+ver. 1.0-beta
 
 Dockerfile and build for containerized execution of gbabbitt/ATOMDANCE-comparative-protein-dynamics Molecular Dynamics software suite.
-ATOMDANCE package source is available here:
+ATOMDANCE package source is available here: \
 https://github.com/gbabbitt/ATOMDANCE-comparative-protein-dynamics
 
 How to use this repository
@@ -15,21 +15,30 @@ How to use this repository
 mkdir /PATH/TO/SHARED/DIRECTORY && chmod -R 766 /PATH/TO/SHARED/DIRECTORY
 ```
 
-3) Download UCSF ChimeraX and deposit the .deb file in the empty chimerax/ directory included with the repository. This is how atomdance-docker will install UCSF ChimeraX.
+3) Download UCSF ChimeraX and deposit the ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb file in the empty chimerax/ directory included with the repository. This is how atomdance-docker will install UCSF ChimeraX.
 [UCSF-ChimeraX](https://www.cgl.ucsf.edu/chimerax/download.html)
 
 4) Set up and run this image locally:
 ```bash
-# 1) Clone this repository and its cpptraj submodule
+# 1) Clone this repository and its submodules
 git clone --recurse-submodules https://github.com/patrynk/atomdance-docker.git
-# 2) Build the image. This will take a WHILE. Future releases will include links to pre-built images.
+# 2) Build the image. This will take a WHILE. 
 cd atomdance-docker
 sudo su
 docker-compose build
-# 
-# 3) Deploy the image and follow the on-screen GUI. Make sure you are root user (i.e. sudo su)
+# 3) Deploy the image and follow the on-screen GUI. Make sure you are root user each time you execute this (i.e. sudo su)
 docker-compose run -u atomuser -v /PATH/TO/SHARED/DIRECTORY:/data atomdance start
 ```
+
+5) To run an analysis, copy your chosen MD files to /PATH/TO/SHARED/DIRECTORY you specified before, and after running the 'docker-compose run' command specified in step 4, substep 3, specify the paths to the files in the ATOMDANCE UI but replacing /PATH/TO/SHARED/DIRECTORY with /data.
+For example, the files \
+/PATH/TO/SHARED/DIRECTORY/example.prmtop \
+/PATH/TO/SHARED/DIRECTORY/example.pdb \
+/PATH/TO/SHARED/DIRECTORY/example.nc \
+would become \
+/data/example.prmtop \
+/data/example.pdb \
+/data/example.nc
 
 Citations:
 
