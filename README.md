@@ -15,7 +15,8 @@ How to use this repository
 mkdir /PATH/TO/SHARED/DIRECTORY && chmod -R 766 /PATH/TO/SHARED/DIRECTORY
 ```
 
-3) IN DEVELOPMENT - download UCSF ChimeraX and deposit it in your shared directory above. This is how atomdance-docker will install UCSF ChimeraX.
+3) Download UCSF ChimeraX and deposit the .deb file in the empty chimerax/ directory included with the repository. This is how atomdance-docker will install UCSF ChimeraX.
+[UCSF-ChimeraX](https://www.cgl.ucsf.edu/chimerax/download.html)
 
 4) Set up and run this image locally:
 ```bash
@@ -25,11 +26,10 @@ git clone --recurse-submodules https://github.com/patrynk/atomdance-docker.git
 cd atomdance-docker
 sudo su
 docker-compose build
-# 3) Deploy the image and follow the on-screen GUI.
+# 
+# 3) Deploy the image and follow the on-screen GUI. Make sure you are root user (i.e. sudo su)
 docker-compose run -u atomuser -v /PATH/TO/SHARED/DIRECTORY:/data atomdance start
 ```
-
-NOTE: ATOMDANCE analytical pipeline capabilities are still in-development, and will not work in the UI.
 
 Citations:
 

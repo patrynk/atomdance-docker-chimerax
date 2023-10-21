@@ -2,7 +2,7 @@
 FROM ubuntu:22.04
 
 # Add analysis user
-RUN adduser --quiet --disabled-password atomuser && usermod -a -G audio atomuser
+RUN adduser --quiet --disabled-password atomuser && usermod -a -G audio atomuser && usermod -a -G sudo atomuser
 
 # Set environment variables
 ENV LIBGL_ALWAYS_INDIRECT=1
@@ -19,18 +19,33 @@ RUN apt-get update && apt-get install -y \
     wget \
     curl \
     zlib1g \
-    zlib1g-dev
+    zlib1g-dev \
+    gdebi
 
 # cpptraj installation workflow, ver. 6.20.5
 COPY ./lib/cpptraj /cpptraj/
 WORKDIR /cpptraj/
 RUN ./configure gnu --buildlibs
 RUN make install
-
+RUN echo 'export CPPTRAJ_HOME=/cpptraj' >> /home/atomuser/.bashrc
+RUN echo 'export PATH=$PATH:$CPPTRAJ_HOME/bin' >> /home/atomuser/.bashrc
 WORKDIR /
 
+# ATOMDANCE installation workflow, ver 1.3
 COPY ./lib/ATOMDANCE-comparative-protein-dynamics /atomdance/
 
-RUN echo "#! /usr/bin/env bash" >> /usr/bin/start
-RUN echo "python3 /atomdance/ATOMDANCE.py" >> /usr/bin/start
+# UCSF ChimeraX installation workflow, ver 1.6
+COPY ./chimerax/ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb /tmp/ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb
+RUN gdebi -n /tmp/ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb
+
+
+# Setup start, install-chimerax commands
+COPY ./bin/start /usr/bin/start
 RUN chmod +x /usr/bin/start
+
+# Setup python environment
+RUN echo 'alias python3=/usr/lib/ucsf-chimerax/bin/python3.9' >> /home/atomuser/.bashrc
+RUN echo 'export PATH=$PATH:$CPPTRAJ_HOME/bin:/home/atomuser/.local/bin' >> /home/atomuser/.bashrc
+WORKDIR /usr/lib/ucsf-chimerax/bin/
+USER atomuser
+RUN ./python3.9 -m pip install PyQt5 pandas sklearn scikit-learn plotnine progress
