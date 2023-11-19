@@ -27,8 +27,7 @@ COPY --chown=atomuser:atomuser ./lib/cpptraj /cpptraj/
 WORKDIR /cpptraj/
 RUN ./configure gnu --buildlibs
 RUN make install
-RUN echo 'export CPPTRAJ_HOME=/cpptraj' >> /home/atomuser/.bashrc
-RUN echo 'export PATH=$PATH:$CPPTRAJ_HOME/bin' >> /home/atomuser/.bashrc
+
 WORKDIR /
 
 # ATOMDANCE installation workflow, ver 1.3
@@ -38,14 +37,20 @@ COPY --chown=atomuser:atomuser ./lib/ATOMDANCE-comparative-protein-dynamics /ato
 COPY --chown=atomuser:atomuser ./chimerax/ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb /tmp/ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb
 RUN gdebi -n /tmp/ucsf-chimerax_1.6.1ubuntu22.04_amd64.deb
 
+# Setup python environment
+RUN ln -sf /usr/lib/ucsf-chimerax/bin/python3.9 /usr/bin/python3
+COPY --chown=atomuser:atomuser ./lib/pingouin/ /usr/lib/ucsf-chimerax/lib/python3.9/site-packages/pingouin/
+COPY --chown=atomuser:atomuser ./lib/pingouin-0.5.3.dist-info/ /usr/lib/ucsf-chimerax/lib/python3.9/site-packages/pingouin-0.5.3.dist-info/
+WORKDIR /usr/lib/ucsf-chimerax/bin/
+USER atomuser
+RUN ./python3.9 -m pip install PyQt5 pandas scikit-learn plotnine progress seaborn pandas_flavor outdated tabulate
+WORKDIR /atomdance/
 
 # Setup start, install-chimerax commands
 COPY --chown=atomuser:atomuser ./bin/start /usr/bin/start
 RUN chmod +x /usr/bin/start
 
-# Setup python environment
+# Enable running manually with user login to container, i.e. 'docker-compose run -u atomuser -v /PATH/TO/SHARED/DIRECTORY:/data atomdance /bin/bash'
+RUN echo 'export CPPTRAJ_HOME=/cpptraj' >> /home/atomuser/.bashrc
 RUN echo 'alias python3=/usr/lib/ucsf-chimerax/bin/python3.9' >> /home/atomuser/.bashrc
 RUN echo 'export PATH=$PATH:$CPPTRAJ_HOME/bin:/home/atomuser/.local/bin' >> /home/atomuser/.bashrc
-WORKDIR /usr/lib/ucsf-chimerax/bin/
-USER atomuser
-RUN ./python3.9 -m pip install PyQt5 pandas scikit-learn plotnine progress
