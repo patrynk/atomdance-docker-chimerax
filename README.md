@@ -35,10 +35,17 @@ For example, the files \
 /PATH/TO/SHARED/DIRECTORY/example.prmtop \
 /PATH/TO/SHARED/DIRECTORY/example.pdb \
 /PATH/TO/SHARED/DIRECTORY/example.nc \
+\
 would become \
-/data/example.prmtop \
-/data/example.pdb \
-/data/example.nc
+\
+example.prmtop \
+example.pdb \
+example.nc
+
+Known issues:
+- Sometimes CPPTraj hangs with dead processes. Re-starting the analysis will fix this.
+- CHOREOGRAPH 2.0 dependency penguoin does not play nicely with ChimeraX python3.9 installation, working on a venv or other fix for this. 
+- ChimeraX visualization functionality not yet working within docker image. 
 
 Citations:
 
