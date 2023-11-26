@@ -1,4 +1,4 @@
-atomdance-docker
+atomdance-docker-chimerax
 ================
 ver. 1.0-beta
 
@@ -21,7 +21,7 @@ mkdir /PATH/TO/SHARED/DIRECTORY && chmod -R 766 /PATH/TO/SHARED/DIRECTORY
 4) Set up and run this image locally:
 ```bash
 # 1) Clone this repository and its submodules
-git clone --recurse-submodules https://github.com/patrynk/atomdance-docker.git
+git clone --recurse-submodules https://github.com/patrynk/atomdance-docker-chimerax.git
 # 2) Build the image. This will take a WHILE. 
 cd atomdance-docker
 sudo su
@@ -30,7 +30,7 @@ docker-compose build
 docker-compose run -u atomuser -v /PATH/TO/SHARED/DIRECTORY:/data atomdance start
 ```
 
-5) To run an analysis, copy your chosen MD files to /PATH/TO/SHARED/DIRECTORY you specified before, and after running the 'docker-compose run' command specified in step 4, substep 3, specify the paths to the files in the ATOMDANCE UI but replacing /PATH/TO/SHARED/DIRECTORY with /data.
+5) To run an analysis, copy your chosen MD files to /PATH/TO/SHARED/DIRECTORY you specified before, and after running the 'docker-compose run' command specified in step 4, substep 3, specify the paths to the files in the ATOMDANCE UI but removing /PATH/TO/SHARED/DIRECTORY.
 For example, the files \
 /PATH/TO/SHARED/DIRECTORY/example.prmtop \
 /PATH/TO/SHARED/DIRECTORY/example.pdb \
